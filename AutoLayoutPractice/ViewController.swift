@@ -45,18 +45,126 @@ class ViewController: UIViewController {
     let spacingConstant : CGFloat = 0.0
     
     // Calculator functionality variables
-    var calculationValue : Double = 0
+    var calculationValue : [Double] = []
+    var operationArray : [(Double,Double)->Double] = []
+    var numbersEnteredArray : [String] = []
     
-    func numberPressed(sender: UIButton!) {
-        let numberEntered : String = sender.titleLabel!.text!
-        calculationValue = (numberEntered as NSString).doubleValue
-        
+    func createNumberToDisplay() -> String {
+        var finalNumber = String()
+        for i in self.numbersEnteredArray {
+            finalNumber = "\(finalNumber)" + "\(i)"
+        }
+        return finalNumber
+    }
+    
+    func reset() {
+        numbersEnteredArray = []
+        calculationLabel.text = "0"
+    }
+    
+    func clearAll() {
+        operationArray = []
+        displayNumber = ""
+        calculationValue = []
+        reset()
+    }
+    func performCalculations() -> Double{
+        println(calculationValue)
+        println(calculationValue.count)
+        if calculationValue.count == 2 {
+            let solution = operationArray[0](calculationValue[0], calculationValue[1])
+                return solution
+//            return op(num1,num2)
+            
+        } else {
+            
+        }
+        return 0.0
+    }
+    
+    var displayNumber : String = ""
+    
+    func doPressButton(sender: UIButton!) {
+        let buttonTitle = sender.titleLabel?.text
+        if let buttonTitle = buttonTitle {
+            switch buttonTitle {
+                case "1","2","3","4","5","6","7","8","9","0":
+                    numbersEnteredArray.append(buttonTitle)
+                    displayNumber = createNumberToDisplay()
+                    calculationLabel.text = "\(displayNumber)"
+                case "AC":
+                    clearAll()
+                case "C":
+                    reset()
+                case "%":
+                    if calculationValue.count != 0 {
+                        operationArray.append(%)
+                        reset()
+                    } else {
+                        calculationValue.append((displayNumber as NSString).doubleValue)
+                        operationArray.append(%)
+                        reset()
+                }
+                case "/":
+                    if calculationValue.count != 0 {
+                        operationArray.append(/)
+                        reset()
+                    } else {
+                        calculationValue.append((displayNumber as NSString).doubleValue)
+                        operationArray.append(/)
+                        reset()
+                }
+                case "x":
+                    if calculationValue.count != 0 {
+                        operationArray.append(*)
+                        reset()
+                    } else {
+                        calculationValue.append((displayNumber as NSString).doubleValue)
+                        operationArray.append(*)
+                        reset()
+                }
+                case "-":
+                    if calculationValue.count != 0 {
+                        operationArray.append(-)
+                        reset()
+                    } else {
+                        calculationValue.append((displayNumber as NSString).doubleValue)
+                        operationArray.append(-)
+                        reset()
+                }
+                case "+":
+                    if calculationValue.count != 0 {
+                        calculationLabel.text = "\(calculationValue[0]) +"
+                        operationArray.append(+)
+                        numbersEnteredArray = []
+                    } else {
+                        calculationValue.append((displayNumber as NSString).doubleValue)
+                        calculationLabel.text = "\(calculationValue[0]) +"
+                        operationArray.append(+)
+                        numbersEnteredArray = []
+                    }
+                case "=":
+                    calculationValue.append((displayNumber as NSString).doubleValue)
+                    let solution = performCalculations()
+                    clearAll()
+                    calculationValue.append(solution)
+                    println("return: \(calculationValue[0])")
+                    calculationLabel.text = "\(calculationValue[0])"
+                    println("End of '=': \(calculationValue)")
+                
+                case ".":
+                println(buttonTitle)
+            default:
+                println("not a number")
+            }
+        }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
+
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
@@ -71,7 +179,6 @@ class ViewController: UIViewController {
         //  Calculation Label
         calculationLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
         calculationLabel.backgroundColor = .blackColor()
-        calculationLabel.text = "\(calculationValue)"
         calculationLabel.font = UIFont(name: "HelveticaNeue-Thin", size: 70)
         calculationLabel.numberOfLines = 0
         calculationLabel.textColor = .whiteColor()
@@ -99,7 +206,6 @@ class ViewController: UIViewController {
         //   Second Row
         sevenButton.setTranslatesAutoresizingMaskIntoConstraints(false)
         sevenButton.setTitle("7", forState: UIControlState.Normal)
-        sevenButton.addTarget(self, action: "numberPressed", forControlEvents: .TouchUpInside)
         view.addSubview(sevenButton)
         
         eightButton.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -146,7 +252,6 @@ class ViewController: UIViewController {
         
         plusButton.setTranslatesAutoresizingMaskIntoConstraints(false)
         plusButton.setTitle("+", forState: UIControlState.Normal)
-        plusButton.backgroundColor = .orangeColor()
         view.addSubview(plusButton)
         
         //   Fifth Row
@@ -1197,8 +1302,9 @@ class ViewController: UIViewController {
         doMakeGreyButtons()
         doMakeOrangeButtons()
     }
-
     
+
+// ---> Rename this function
     func setupBorders() {
         for v in view.subviews {
             if (v is UIButton) {
@@ -1206,6 +1312,7 @@ class ViewController: UIViewController {
                 button.titleLabel!.font = UIFont(name: "HelveticaNeue-Thin", size: 40)
                 button.layer.borderColor = UIColor.blackColor().CGColor
                 button.layer.borderWidth = 0.5
+                button.addTarget(self, action: "doPressButton:", forControlEvents: UIControlEvents.TouchUpInside)
 
             }
         }

@@ -7,34 +7,34 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>BB33D282-5D6D-402D-885E-C10F704049EA</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>AutoLayoutPractice</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>B9B8B28E2FC413CB292F80BC60484B1B27B53CA5</key>
-		<string>https://github.com/kkane106/swift-practice.git</string>
+		<key>13CF4B4DD3B6675A4D36495350B2761B233850FA</key>
+		<string>https://github.com/kkane106/SwiftCalculator.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>AutoLayoutPractice/AutoLayoutPractice.xcodeproj/project.xcworkspace</string>
+	<string>AutoLayoutPractice.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>B9B8B28E2FC413CB292F80BC60484B1B27B53CA5</key>
-		<string>../../..</string>
+		<key>13CF4B4DD3B6675A4D36495350B2761B233850FA</key>
+		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/kkane106/swift-practice.git</string>
+	<string>https://github.com/kkane106/SwiftCalculator.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>B9B8B28E2FC413CB292F80BC60484B1B27B53CA5</string>
+	<string>13CF4B4DD3B6675A4D36495350B2761B233850FA</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>B9B8B28E2FC413CB292F80BC60484B1B27B53CA5</string>
+			<string>13CF4B4DD3B6675A4D36495350B2761B233850FA</string>
 			<key>IDESourceControlWCCName</key>
-			<string>swift-practice</string>
+			<string>AutoLayoutPractice</string>
 		</dict>
 	</array>
 </dict>
