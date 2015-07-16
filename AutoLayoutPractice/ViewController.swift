@@ -46,6 +46,12 @@ class ViewController: UIViewController {
     
     // Calculator functionality variables
     var calculationValue : Double = 0
+    
+    func numberPressed(sender: UIButton!) {
+        let numberEntered : String = sender.titleLabel!.text!
+        calculationValue = (numberEntered as NSString).doubleValue
+        
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,6 +99,7 @@ class ViewController: UIViewController {
         //   Second Row
         sevenButton.setTranslatesAutoresizingMaskIntoConstraints(false)
         sevenButton.setTitle("7", forState: UIControlState.Normal)
+        sevenButton.addTarget(self, action: "numberPressed", forControlEvents: .TouchUpInside)
         view.addSubview(sevenButton)
         
         eightButton.setTranslatesAutoresizingMaskIntoConstraints(false)
@@ -157,6 +164,7 @@ class ViewController: UIViewController {
         equalButton.setTranslatesAutoresizingMaskIntoConstraints(false)
         equalButton.setTitle("=", forState: UIControlState.Normal)
         view.addSubview(equalButton)
+        
         
         // List of grey buttons to be set as grey in subsequent function
         let greyButtonArray : [UIButton] = [
