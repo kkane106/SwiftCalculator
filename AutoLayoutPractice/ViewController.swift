@@ -77,11 +77,12 @@ class ViewController: UIViewController {
 //            return op(num1,num2)
             
         } else {
+            calculationLabel.text = "ERROR"
             
         }
         return 0.0
     }
-    
+   
     var displayNumber : String = ""
     
     func doPressButton(sender: UIButton!) {
@@ -148,10 +149,7 @@ class ViewController: UIViewController {
                     let solution = performCalculations()
                     clearAll()
                     calculationValue.append(solution)
-                    println("return: \(calculationValue[0])")
                     calculationLabel.text = "\(calculationValue[0])"
-                    println("End of '=': \(calculationValue)")
-                
                 case ".":
                 println(buttonTitle)
             default:
