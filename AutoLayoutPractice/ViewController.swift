@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     var lineClearButton = UIButton()
     var moduloButton = UIButton()
     var divideButton = UIButton()
-    
+
     //   Second Row
     var sevenButton = UIButton()
     var eightButton = UIButton()
@@ -59,20 +59,22 @@ class ViewController: UIViewController {
     
     func reset() {
         numbersEnteredArray = []
-        calculationLabel.text = "0"
+        calculationLabel.text = "\(calculationValue[0])"
     }
     
     func clearAll() {
         operationArray = []
         displayNumber = ""
         calculationValue = []
-        reset()
+        numbersEnteredArray = []
+        calculationLabel.text = "0"
     }
     func performCalculations() -> Double{
         println(calculationValue)
         println(calculationValue.count)
         if calculationValue.count == 2 {
             let solution = operationArray[0](calculationValue[0], calculationValue[1])
+            println("After: \(calculationValue)")
                 return solution
 //            return op(num1,num2)
             
@@ -84,6 +86,7 @@ class ViewController: UIViewController {
     }
    
     var displayNumber : String = ""
+    var numberString : String = ""
     
     func doPressButton(sender: UIButton!) {
         let buttonTitle = sender.titleLabel?.text
@@ -97,6 +100,7 @@ class ViewController: UIViewController {
                     clearAll()
                 case "C":
                     reset()
+                    calculationLabel.text = "0"
                 case "%":
                     if calculationValue.count != 0 {
                         operationArray.append(%)
@@ -150,8 +154,18 @@ class ViewController: UIViewController {
                     clearAll()
                     calculationValue.append(solution)
                     calculationLabel.text = "\(calculationValue[0])"
+                    println("end of equal case statement \(calculationValue)")
                 case ".":
-                println(buttonTitle)
+                    for i in numbersEnteredArray {
+                        println(numbersEnteredArray)
+                        if i.rangeOfString(".") != nil{
+                            println("exists")
+                        }else {
+                            numbersEnteredArray.append(".")
+                            displayNumber = createNumberToDisplay()
+                            calculationLabel.text = "\(displayNumber)"
+                        }
+                    }
             default:
                 println("not a number")
             }
