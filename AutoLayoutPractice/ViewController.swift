@@ -59,7 +59,11 @@ class ViewController: UIViewController {
     
     func reset() {
         numbersEnteredArray = []
-        calculationLabel.text = "\(calculationValue[0])"
+        if calculationValue.count == 0 {
+        calculationLabel.text = "0"
+        } else {
+            calculationLabel.text = "\(calculationValue[0])"
+        }
     }
     
     func clearAll() {
@@ -76,8 +80,6 @@ class ViewController: UIViewController {
             let solution = operationArray[0](calculationValue[0], calculationValue[1])
             println("After: \(calculationValue)")
                 return solution
-//            return op(num1,num2)
-            
         } else {
             calculationLabel.text = "ERROR"
             
@@ -156,16 +158,14 @@ class ViewController: UIViewController {
                     calculationLabel.text = "\(calculationValue[0])"
                     println("end of equal case statement \(calculationValue)")
                 case ".":
-                    for i in numbersEnteredArray {
-                        println(numbersEnteredArray)
-                        if i.rangeOfString(".") != nil{
+                    let numberString = "".join(numbersEnteredArray)
+                        if numberString.rangeOfString(".") != nil{
                             println("exists")
                         }else {
                             numbersEnteredArray.append(".")
                             displayNumber = createNumberToDisplay()
                             calculationLabel.text = "\(displayNumber)"
                         }
-                    }
             default:
                 println("not a number")
             }
@@ -193,6 +193,7 @@ class ViewController: UIViewController {
         calculationLabel.backgroundColor = .blackColor()
         calculationLabel.font = UIFont(name: "HelveticaNeue-Thin", size: 70)
         calculationLabel.numberOfLines = 0
+        calculationLabel.adjustsFontSizeToFitWidth = true
         calculationLabel.textColor = .whiteColor()
         calculationLabel.adjustsFontSizeToFitWidth = true
         calculationLabel.textAlignment = .Right
