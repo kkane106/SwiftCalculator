@@ -12,73 +12,106 @@ class ViewController: UIViewController {
     
     var calculationLabel = UILabel()
     //   First Row
-    var clearButton = UIButton()
-    var lineClearButton = UIButton()
-    var moduloButton = UIButton()
-    var divideButton = UIButton()
+    var clearButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+    var lineClearButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+    var moduloButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+    var divideButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
 
     //   Second Row
-    var sevenButton = UIButton()
-    var eightButton = UIButton()
-    var nineButton = UIButton()
-    var multiplyButton = UIButton()
+    var sevenButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+    var eightButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+    var nineButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+    var multiplyButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
 
     //   Third Row
-    var fourButton = UIButton()
-    var fiveButton = UIButton()
-    var sixButton = UIButton()
-    var minusButton = UIButton()
+    var fourButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+    var fiveButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+    var sixButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+    var minusButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
 
     //   Fourth Row
-    var oneButton = UIButton()
-    var twoButton = UIButton()
-    var threeButton = UIButton()
-    var plusButton = UIButton()
+    var oneButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+    var twoButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+    var threeButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+    var plusButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
     
     //   Fifth Row
-    var zeroButton = UIButton()
-    var placeholder = UIButton()
-    var decimalButton = UIButton()
-    var equalButton = UIButton()
+    var zeroButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+    var placeholder = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+    var decimalButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
+    var equalButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
     
     //  Use this to set the spacing between button if so desired
     let spacingConstant : CGFloat = 0.0
     
     // Calculator functionality variables
-    var calculationValue : [Double] = []
-    var operationArray : [(Double,Double)->Double] = []
-    var numbersEnteredArray : [String] = []
+    var calculationValues : [Double] = [] // Stores calculated value
+    var operationArray : [(Double,Double)->Double] = [] // Stores user input of operators
+    var numbersEnteredArray : [String] = [] // Stores user input of numbers
     
-    func createNumberToDisplay() -> String {
-        var finalNumber = String()
-        for i in self.numbersEnteredArray {
-            finalNumber = "\(finalNumber)" + "\(i)"
+    // Store operators in dictionary
+    let operators: [String:(Double,Double)->Double] = [
+        "+": (+),
+        "-": (-),
+        "/": (/),
+        "x": (*)
+    ]
+    
+    // DRY function for operations in case statement nested inside doPressButton()
+    func doSomeOperation(buttonTitle: String) {
+        if calculationValues.count != 0 {
+            calculationLabel.text = "\(calculationValues[0]) \(buttonTitle)"
+            numbersEnteredArray = []
+            operationArray.append(operators[buttonTitle]!)
+        } else {
+            calculationValues.append((displayNumber as NSString).doubleValue)
+            if (calculationValues[0] % 1) == 0 {
+                let displayInteger = Int(calculationValues[0])
+                calculationLabel.text = "\(displayInteger) \(buttonTitle)"
+                numbersEnteredArray = []
+                operationArray.append(operators[buttonTitle]!)
+            } else {
+                calculationLabel.text = "\(calculationValues[0]) \(buttonTitle)"
+                numbersEnteredArray = []
+                operationArray.append(operators[buttonTitle]!)
+            }
         }
-        return finalNumber
+    }
+
+    // Create a string from the array of Numbers the user entered before an operator
+    func createNumberToDisplay() -> String {
+        var numberString = String()
+        numberString = "".join(numbersEnteredArray)
+        
+        return numberString
     }
     
+    // Empty temporary variables between calculations or on "C" press
     func reset() {
         numbersEnteredArray = []
-        if calculationValue.count == 0 {
+        if calculationValues.count == 0 {
         calculationLabel.text = "0"
         } else {
-            calculationLabel.text = "\(calculationValue[0])"
+            calculationLabel.text = "\(calculationValues[0])"
         }
     }
     
+    // Empty all variables, prepare for all new calculation
     func clearAll() {
         operationArray = []
         displayNumber = ""
-        calculationValue = []
+        calculationValues = []
         numbersEnteredArray = []
         calculationLabel.text = "0"
     }
-    func performCalculations() -> Double{
-        println(calculationValue)
-        println(calculationValue.count)
-        if calculationValue.count == 2 {
-            let solution = operationArray[0](calculationValue[0], calculationValue[1])
-            println("After: \(calculationValue)")
+    
+    // Actually perform the calculation by using the stored operator
+    func performCalculations() -> Double {
+        println(calculationValues)
+        println(calculationValues.count)
+        if calculationValues.count == 2 {
+            let solution = operationArray[0](calculationValues[0], calculationValues[1])
+            println("After: \(calculationValues)")
                 return solution
         } else {
             calculationLabel.text = "ERROR"
@@ -88,7 +121,6 @@ class ViewController: UIViewController {
     }
    
     var displayNumber : String = ""
-    var numberString : String = ""
     
     func doPressButton(sender: UIButton!) {
         let buttonTitle = sender.titleLabel?.text
@@ -104,59 +136,36 @@ class ViewController: UIViewController {
                     reset()
                     calculationLabel.text = "0"
                 case "%":
-                    if calculationValue.count != 0 {
+                    if calculationValues.count != 0 {
                         operationArray.append(%)
                         reset()
                     } else {
-                        calculationValue.append((displayNumber as NSString).doubleValue)
+                        calculationValues.append((displayNumber as NSString).doubleValue)
                         operationArray.append(%)
                         reset()
                 }
                 case "/":
-                    if calculationValue.count != 0 {
-                        operationArray.append(/)
-                        reset()
-                    } else {
-                        calculationValue.append((displayNumber as NSString).doubleValue)
-                        operationArray.append(/)
-                        reset()
-                }
+                    doSomeOperation(buttonTitle)
                 case "x":
-                    if calculationValue.count != 0 {
-                        operationArray.append(*)
-                        reset()
-                    } else {
-                        calculationValue.append((displayNumber as NSString).doubleValue)
-                        operationArray.append(*)
-                        reset()
-                }
+                    doSomeOperation(buttonTitle)
                 case "-":
-                    if calculationValue.count != 0 {
-                        operationArray.append(-)
-                        reset()
-                    } else {
-                        calculationValue.append((displayNumber as NSString).doubleValue)
-                        operationArray.append(-)
-                        reset()
-                }
+                    doSomeOperation(buttonTitle)
                 case "+":
-                    if calculationValue.count != 0 {
-                        calculationLabel.text = "\(calculationValue[0]) +"
-                        operationArray.append(+)
-                        numbersEnteredArray = []
-                    } else {
-                        calculationValue.append((displayNumber as NSString).doubleValue)
-                        calculationLabel.text = "\(calculationValue[0]) +"
-                        operationArray.append(+)
-                        numbersEnteredArray = []
-                    }
+                    doSomeOperation(buttonTitle)
                 case "=":
-                    calculationValue.append((displayNumber as NSString).doubleValue)
+                    calculationValues.append((displayNumber as NSString).doubleValue)
                     let solution = performCalculations()
                     clearAll()
-                    calculationValue.append(solution)
-                    calculationLabel.text = "\(calculationValue[0])"
-                    println("end of equal case statement \(calculationValue)")
+                    calculationValues.append(solution)
+                    if (calculationValues[0] % 1) == 0 {
+                        let displayInteger = Int(calculationValues[0])
+                        calculationLabel.text = "\(displayInteger)"
+                        println("end of equal case statement \(calculationValues)")
+
+                    } else {
+                        calculationLabel.text = "\(calculationValues[0])"
+                        println("end of equal case statement \(calculationValues)")
+                    }
                 case ".":
                     let numberString = "".join(numbersEnteredArray)
                         if numberString.rangeOfString(".") != nil{
@@ -174,13 +183,14 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupCalculator()
     }
     
 
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        setupCalculator()
+
     }
 
     func setupCalculator() {
@@ -1307,18 +1317,19 @@ class ViewController: UIViewController {
         func doMakeOrangeButtons() {
             for button in orangeButtonArray {
                 button.backgroundColor = UIColor(hexString: "#F68F12")
+                button.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
             }
         }
         
         // Call methods to create borders and color buttons correctly
-        setupBorders()
+        setupBordersFontsAndButtonActions()
         doMakeGreyButtons()
         doMakeOrangeButtons()
     }
     
 
 // ---> Rename this function
-    func setupBorders() {
+    func setupBordersFontsAndButtonActions() {
         for v in view.subviews {
             if (v is UIButton) {
                 let button = v as! UIButton

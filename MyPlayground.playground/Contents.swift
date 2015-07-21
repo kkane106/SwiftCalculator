@@ -1,10 +1,9 @@
-var x : [AnyObject] = [1.0, +, 2.0, -, 4.0]
-for i in 0...(x.count-1) {
-    var solution : Double = 0
-    if i % 2 != 0 {
-        
-    } else {
-        var current = i, next = i+1, afterNext = i+2
-        solution = solution + x[next](x[current], x[afterNext])
-    }
-}
+var x = 10.0
+var y = 10.1
+
+x % 1 == 0
+
+y % 1 == 0
+
+let v = y * -1
+let z: String = "\(v)"
